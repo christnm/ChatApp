@@ -6,19 +6,70 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
+
+
+class MainMessagesViewModel: ObservableObject {
+    
+    @Published var chatUser: ChatUser?
+    
+    init(){
+        DispatchQueue.main.async {
+            self.isUserCurrentlyLogggedOut = FirebaseManager.shared.auth.currentUser?.uid == nil
+        }
+        
+        fetchCurrentUser()
+    }
+    
+     func fetchCurrentUser(){
+        guard let uid =
+                FirebaseManager.shared.auth.currentUser?.uid else {return}
+        FirebaseManager.shared.firestore.collection("users").document(uid).getDocument { snapshot, error in
+            if let error = error {
+                print("Failed to fetch current user: ", error)
+                return
+            }
+            guard let data = snapshot?.data() else {
+            print("Data Not found")
+                return
+            }
+            self.chatUser = .init(data: data)
+            
+        }
+    }
+    
+    @Published var isUserCurrentlyLogggedOut = false
+    
+    func handleSignOut(){
+        isUserCurrentlyLogggedOut.toggle()
+        
+        try? FirebaseManager.shared.auth.signOut()
+        
+    }
+}
 
 struct MainMessagesView: View {
 
     @State var shouldShowLogOutOptions = false
+    
+    @ObservedObject private var vm = MainMessagesViewModel()
 
     private var customNavBar: some View {
         HStack(spacing: 16) {
-
-            Image(systemName: "person.fill")
-                .font(.system(size: 34, weight: .heavy))
-
+            
+            WebImage(url: URL(string: vm.chatUser?.profileImageUrl ?? ""))
+                .resizable()
+                .scaledToFill()
+                .frame(width: 50, height: 50)
+                .clipped()
+                .cornerRadius(50)
+                .overlay(RoundedRectangle(cornerRadius: 44)
+                            .stroke(Color(.label), lineWidth: 1)
+                )
+                .shadow(radius: 5)
             VStack(alignment: .leading, spacing: 4) {
-                Text("USERNAME")
+                let email = vm.chatUser?.email.replacingOccurrences(of: "@mail.com", with: "") ?? ""
+                Text(email)
                     .font(.system(size: 24, weight: .bold))
 
                 HStack {
@@ -46,9 +97,17 @@ struct MainMessagesView: View {
             .init(title: Text("Settings"), message: Text("What do you want to do?"), buttons: [
                 .destructive(Text("Sign Out"), action: {
                     print("handle sign out")
+                    vm.handleSignOut()
                 }),
                     .cancel()
             ])
+        }
+        .fullScreenCover(isPresented: $vm.isUserCurrentlyLogggedOut, onDismiss: nil) {
+            LoginView(didCompleteLoginProcess: {
+                self.vm.isUserCurrentlyLogggedOut = false
+                self.vm.fetchCurrentUser()
+                
+            })
         }
     }
 
@@ -97,10 +156,12 @@ struct MainMessagesView: View {
             }.padding(.bottom, 50)
         }
     }
+    
+    @State var shouldShowNewMessageScreen = false
 
     private var newMessageButton: some View {
         Button {
-
+            shouldShowNewMessageScreen.toggle()
         } label: {
             HStack {
                 Spacer()
@@ -114,6 +175,9 @@ struct MainMessagesView: View {
                 .cornerRadius(32)
                 .padding(.horizontal)
                 .shadow(radius: 15)
+        }
+        .fullScreenCover(isPresented: $shouldShowNewMessageScreen, onDismiss: nil) {
+            CreateNewMessageView()
         }
     }
 }
