@@ -17,6 +17,7 @@
 		1C156D4B27C48DE90019DCE2 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 1C156D4A27C48DE90019DCE2 /* SDWebImageSwiftUI */; };
 		1C156D4E27C493950019DCE2 /* ChatUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C156D4D27C493950019DCE2 /* ChatUser.swift */; };
 		1C156D5227C496CD0019DCE2 /* CreateNewMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C156D5127C496CD0019DCE2 /* CreateNewMessageView.swift */; };
+		1C156D5527CDE7640019DCE2 /* ChatLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C156D5427CDE7640019DCE2 /* ChatLogView.swift */; };
 		1C9A8F42279F49BF00DB0DF4 /* ChatAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A8F41279F49BF00DB0DF4 /* ChatAppApp.swift */; };
 		1C9A8F44279F49BF00DB0DF4 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C9A8F43279F49BF00DB0DF4 /* LoginView.swift */; };
 		1C9A8F46279F49C000DB0DF4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C9A8F45279F49C000DB0DF4 /* Assets.xcassets */; };
@@ -30,6 +31,7 @@
 		1C156D4727C489C90019DCE2 /* FirebaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseManager.swift; sourceTree = "<group>"; };
 		1C156D4D27C493950019DCE2 /* ChatUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatUser.swift; sourceTree = "<group>"; };
 		1C156D5127C496CD0019DCE2 /* CreateNewMessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateNewMessageView.swift; sourceTree = "<group>"; };
+		1C156D5427CDE7640019DCE2 /* ChatLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatLogView.swift; sourceTree = "<group>"; };
 		1C9A8F3E279F49BF00DB0DF4 /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C9A8F41279F49BF00DB0DF4 /* ChatAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppApp.swift; sourceTree = "<group>"; };
 		1C9A8F43279F49BF00DB0DF4 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
@@ -71,6 +73,7 @@
 		1C156D4F27C496790019DCE2 /* MainMessages */ = {
 			isa = PBXGroup;
 			children = (
+				1C156D5327CDE73D0019DCE2 /* chat */,
 				1C156D5027C4968D0019DCE2 /* New Message */,
 				1C156D4427C4878E0019DCE2 /* MainMessagesView.swift */,
 			);
@@ -83,6 +86,14 @@
 				1C156D5127C496CD0019DCE2 /* CreateNewMessageView.swift */,
 			);
 			path = "New Message";
+			sourceTree = "<group>";
+		};
+		1C156D5327CDE73D0019DCE2 /* chat */ = {
+			isa = PBXGroup;
+			children = (
+				1C156D5427CDE7640019DCE2 /* ChatLogView.swift */,
+			);
+			path = chat;
 			sourceTree = "<group>";
 		};
 		1C9A8F35279F49BF00DB0DF4 = {
@@ -207,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1C156D4E27C493950019DCE2 /* ChatUser.swift in Sources */,
+				1C156D5527CDE7640019DCE2 /* ChatLogView.swift in Sources */,
 				1C156D4327C47FAB0019DCE2 /* ImagePicker.swift in Sources */,
 				1C156D4527C4878E0019DCE2 /* MainMessagesView.swift in Sources */,
 				1C156D4827C489CA0019DCE2 /* FirebaseManager.swift in Sources */,
