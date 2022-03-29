@@ -67,9 +67,9 @@ class ChatLogViewModel: ObservableObject {
                     }
                 })
                 
-                DispatchQueue.main.sync {
-                    self.count += 1
-                }
+               
+                self.count += 1
+                
                 
 
             }
@@ -95,6 +95,8 @@ class ChatLogViewModel: ObservableObject {
                 return
             }
             
+            self.persistRecentMessage()
+            
             self.chatText = ""
             self.count += 1
             
@@ -112,6 +114,35 @@ class ChatLogViewModel: ObservableObject {
         }
                 
         
+    }
+    
+    private func persistRecentMessage() {
+        
+        guard let uid = FirebaseManager.shared.auth.currentUser?.uid else {return}
+        guard let toId = self.chatUser?.uid else {return}
+        guard let profileImageURL = self.chatUser?.profileImageUrl else {return}
+        guard let email = self.chatUser?.email else {return}
+        
+        let document = FirebaseManager.shared.firestore.collection("recent_messages")
+            .document(uid)
+            .collection("messages")
+            .document(toId)
+        
+        let data = [
+            "timestamp": Timestamp(),
+            FirebaseConstants.text: self.chatText,
+            FirebaseConstants.fromId: uid,
+            FirebaseConstants.toId: toId,
+            "profileImageUrl": profileImageURL,
+            "email": email
+        ] as [String: Any]
+    
+        document.setData(data) { error in
+            if let error = error{
+                self.errorMessage = "Failed to retrive recent message"
+                return
+            }
+        }
     }
     
     @Published var count = 0
